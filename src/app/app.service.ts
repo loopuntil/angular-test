@@ -56,10 +56,10 @@ export class AppService {
 
   }
 
-  edit(hero:Hero): Promise<boolean> {
+  edit(hero: Hero): Promise<boolean> {
     return this.mockClientEdit(hero).toPromise()
-    .then(success => success)
-    .catch(this.handleError);
+      .then(success => success)
+      .catch(this.handleError);
   }
 
   private mockClient(): Observable<Hero[]> {
@@ -88,10 +88,13 @@ export class AppService {
   private mockClientEdit(hero: Hero): Observable<boolean> {
 
     let rtn: boolean = false;
-    let list = [...this.heroList];
-    list.forEach(o => {
+    let list = this.heroList.map(o => {
       rtn = true;
-      if (o.id === hero.id) o = hero;
+      if (o.id === hero.id) {
+        console.log(`id:${hero.id}, name:${hero.name}`);
+        o = hero;
+      }
+      return o;
     })
     this.heroList = list;
     return of(rtn).delay(100);

@@ -90,7 +90,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   showDialgToEdit(id: string) {
-    this.hero = this.heroList.find(o => o.id === id);
+    this.hero = Object.create(this.heroList.find(o => o.id === id));
 
     this.displayDialog = true;
   }
@@ -103,6 +103,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
         this.hero = null;
         this.displayDialog = false;
+        this.setTable();
       });
     }
   }
