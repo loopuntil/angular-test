@@ -4,9 +4,25 @@
 <input type="text" pInputText [(ngModel)]="heroName" placeholder="Please enter name" />
 <button pButton type="button" icon="fa-plus" (click)="add()" label="Add"></button>
 
+<h3>HERO LIST</h3>
+<p-dataTable [value]="heroList" [loading]="loading" loadingIcon="fa-spinner" selectionMode="single" [rows]="10" [paginator]="true">
+  <p-column field="id" header="ID" sortable="true" [style]="{'text-align':'center'}"></p-column>
+  <p-column field="name" header="NAME" sortable="true" [style]="{'text-align':'center'}"></p-column>
+
+  <p-column styleClass="col-button" field="id" header="" [style]="{'text-align':'center'}">
+    <ng-template pTemplate="header">
+    </ng-template>
+    <ng-template let-data="rowData" pTemplate="body">
+      <button type="button" pButton (click)="confirmRemove(data.id)" label="Remove"></button>
+      <button type="button" pButton (click)="showDialgToEdit(data.id)" label="Edit"></button>
+    </ng-template>
+  </p-column>
+</p-dataTable>
+
 <p-dialog header="ERROR!" [(visible)]="display">
   {{message}}
 </p-dialog>
+
 <p-dialog header="Hero Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
   <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="hero">
     <div class="ui-grid-row">
@@ -25,18 +41,5 @@
     </div>
   </p-footer>
 </p-dialog>
-<p-confirmDialog></p-confirmDialog>
-<h3>HERO LIST</h3>
-<p-dataTable [value]="heroList" [loading]="loading" loadingIcon="fa-spinner" selectionMode="single" [rows]="10" [paginator]="true">
-  <p-column field="id" header="ID" sortable="true" [style]="{'text-align':'center'}"></p-column>
-  <p-column field="name" header="NAME" sortable="true" [style]="{'text-align':'center'}"></p-column>
 
-  <p-column styleClass="col-button" field="id" header="" [style]="{'text-align':'center'}">
-    <ng-template pTemplate="header">
-    </ng-template>
-    <ng-template let-data="rowData" pTemplate="body">
-      <button type="button" pButton (click)="confirmRemove(data.id)" label="Remove"></button>
-      <button type="button" pButton (click)="showDialgToEdit(data.id)" label="Edit"></button>
-    </ng-template>
-  </p-column>
-</p-dataTable>
+<p-confirmDialog></p-confirmDialog>
