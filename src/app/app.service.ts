@@ -5,10 +5,11 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { from } from 'rxjs/observable/from';
 import 'rxjs/add/operator/delay';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 @Injectable()
 export class AppService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   heroList: Hero[] = [
     { id: 31, name: 'Mr. Nice' },
@@ -23,33 +24,32 @@ export class AppService {
     { id: 20, name: 'Tornado' }
   ];
 
+  private baseUrl: string = 'http://localhost:3000/api/hero';
+
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error); // for demo purposes only
     return Promise.reject(error.message || error);
   }
 
   getHeroList(): Promise<Hero[]> {
-    return this.mockClient()
+    //return this.mockClient()
+    return this.http.get(this.baseUrl)
       .toPromise()
       .then(list => list as Hero[])
       .catch(this.handleError);
   }
 
   add(hero: Hero): Promise<boolean> {
-    return this.mockClientAdd(hero)
+    //return this.mockClientAdd(hero)
+    return this.http.post(this.baseUrl, hero)
       .toPromise()
-      .then(list => {
-        if (list.length > 0) {
-          return true;
-        }
-        return false;
-      }).catch(this.handleError);
+      .then(success => success).catch(this.handleError);
 
   }
 
   remove(id: string): Promise<boolean> {
-    console.log(`list size:` + this.heroList.length);
-    return this.mockClientRemove(id)
+    //return this.mockClientRemove(id)
+    return this.http.delete(this.baseUrl+'/'+id)
       .toPromise()
       .then(success => success)
       .catch(this.handleError);
@@ -57,7 +57,9 @@ export class AppService {
   }
 
   edit(hero: Hero): Promise<boolean> {
-    return this.mockClientEdit(hero).toPromise()
+    //return this.mockClientEdit(hero)
+    return this.http.put(this.baseUrl+'/'+hero.id, hero)
+      .toPromise()
       .then(success => success)
       .catch(this.handleError);
   }
